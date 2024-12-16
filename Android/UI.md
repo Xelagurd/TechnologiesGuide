@@ -30,8 +30,10 @@
 
 - Эти функции могут вызываться только из других`@Composable` функций.
 - Они начинаются с заглавной буквы, называются существительным и ничего не возвращают.
-- `@Preview` служит для отображения функций в режиме превью, все параметры должны быть по умолчанию.
-  Атрибуты: `showBackground`, `showSystemUi`
+- `@Preview` служит для отображения функций в режиме превью, все параметры должны быть по умолчанию. Атрибуты:
+    - `showBackground`
+    - `showSystemUi`
+    - `widthDp`
 - Каждая функция принимает опциональный параметр `Modifier` в качестве первого опционального параметра. Атрибуты:
     - `height` (может использоваться с `dimensionResource`)
     - `width`
@@ -54,8 +56,10 @@
     - `animateContentSize` - анимация размера, принимает параметр `animationSpec` со значением функции `spring`
     - `minimumTouchTargetSize()` - минимальный размер для нажатия
     - `selectable` - дает возможность выбирать элемент, `selected` и `onClick`
+    - `testTag` - добавляет тег для тестирования и использования `onNodeWithTagForStringId`
+    - `nestedScroll` - можно задать с помощью `TopAppBarDefaults.enterAlwaysScrollBehavior().nestedScrollConnection`
 
-#### Варианты функций
+#### Размещение элементов
 
 - `setContent` - основной контейнер для `@Composable` функций. Внутри лежит тема, внутри который базовый `Surface`
   с указанием базовых аттрибутов.
@@ -64,10 +68,31 @@
     - `topBar`
 - `Surface()` - контейнер для определения заднего фона, границ. Атрибуты:
     - `topBar`
-- `CenterAlignedTopAppBar()` - верхний топ бар. Атрибуты:
+- `TopAppBar()` - верхний бар. Атрибуты:
     - `title`
     - `colors` - цвет
     - `navigationIcon`
+    - `scrollBehavior` - можно получить с помощью `TopAppBarDefaults.enterAlwaysScrollBehavior()`
+- `BottomAppBar()` - нижний бар.
+- `NavigationRail()` - используется как альтернатива нижнему бару на планшетах, располагается сбоку. Внутри должен
+  содержать набор `NavigationRailItem`
+- `NavigationRailItem()` - элемент `NavigationRail`. Атрибуты:
+    - `selected`
+    - `onClick`
+    - `icon`
+- `PermanentNavigationDrawer()` - используется как альтернатива нижнему бару на компьюетрах, располагается сбоку.
+  Оборачивает остальное приложение.
+  Атрибуты:
+    - `drawerContent` - принимает в качестве значения `PermanentDrawerSheet` с внутренним `NavigationDrawerContent`
+- `NavigationDrawerContent()` - настраивает `PermanentNavigationDrawer`. Атрибуты:
+    - `selectedDestination` - состояние по умолчанию
+    - `onTabPressed`
+    - `navigationItemContentList`
+- `AnimatedVisibility` - применяется для сокрытия элементов. Атрибуты:
+    - `visible`
+
+#### Элементы
+
 - `Text()` - обычный текст. Атрибуты:
     - `text` - лучше использовать с `stringResource()`
     - `fontSize`
@@ -84,16 +109,49 @@
 - `Icon()` - иконка. Атрибуты:
     - `painter` либо `imageVector`
     - `tint` - цвет
+- `Card()` - карточка с закругленными краями. Атрибуты:
+    - `elevation`
+    - `shape`
+    - `onClick`
+- `Button()` - элемент для добавления кнопки. Атрибуты:
+    - `onClick`
+    - `shape`
+    - `colors`
+- `OutlinedButton()` - похож на `Button`, но менее визуально акцентированный
+- `TextButton` - кнопка на тексте. Атрибуты:
+    - `onClick`
+- `IconButton` - кнопка на иконке. Атрибуты:
+    - `onClick`
+- `RadioButton` - выбор элемента. Атрибуты:
+    - `selected`
+    - `onClick`
+- `Switch()` - переключатель. Атрибуты:
+    - `checked`
+    - `onCheckedChange`
+- `TextField()` - элемент для ввода текста. Атрибуты:
+    - `value`
+    - `onValueChange`
+    - `isError` - нужно ли показывать ошибку при вводе
+    - `label` - пометка при вводе, нужно менять в зависимости от `isError`
+    - `leadingIcon`
+    - `singleLine`
+    - `shape`
+    - `keyboardOptions` - имеет атрибут `keyboardType`, где указываетcя тип вводимых данных, и `imeAction` -
+      показывающей тип `action` кнопки клавиатуры (может быть `next`, `done`, `search`, `send`, `go`)
+    - `keyboardActions` - имеет атрибут `onDone`, в котором можно указать, что делать при нажатии
+- `OutlinedTextField()` - похож на `TextField`, но менее визуально акцентированный
+
+#### Сложные элементы
+
 - `Row`, `Column` - для расположения дочерних UI элементов. Атрибуты:
     - `verticalArrangement`
     - `verticalAlignment`
     - `horizontalArrangement`
     - `horizontalAlignment`
-
-<p align="center"><img src="../images/horiz_arrangement.png" alt="Horizontal Arrangement"/></p>
-
-<p align="center"><img src="../images/vert_arrangement.png" alt="Vertical Arrangement"/></p>
-
+- `Box` - для расположения дочерних UI элементов поверх друг друга. Атрибуты те же, что и у `Row`, `Column`
+- `Spacer` - элемент для добавления пустот. Атрибуты те же, что и у `Row`, `Column`
+- `Divider` - разделительная черта. Атрибуты:
+    - `thickness`
 - `LazyColumn`, `LazyRow` - используется для бесконечных списков. Атрибуты:
     - `contentPadding` - в качестве значения может быть передана `contentWindowInsets` из `Scaffold`.
 
@@ -120,45 +178,16 @@
 - `LazyVerticalGrid`, `LazyHorizontalGrid` - используется для бесконечной сетки с одинаковыми по размеру элементами.
 - `LazyVerticalStaggeredGrid`, `LazyHorizontalStaggeredGrid` - используется для бесконечной сетки с разными по размеру
   элементами.
-- `Box` - для расположения дочерних UI элементов поверх друг друга. Атрибуты те же, что и у `Row`, `Column`
-- `Spacer` - элемент для добавления пустот. Атрибуты те же, что и у `Row`, `Column`
-- `Button()` - элемент для добавления кнопки. Атрибуты:
-    - `onClick`
-    - `shape`
-    - `colors`
-- `OutlinedButton()` - похож на `Button`, но менее визуально акцентированный
-- `TextButton` - кнопка на тексте. Атрибуты:
-    - `onClick`
-- `IconButton` - кнопка на иконке. Атрибуты:
-    - `onClick`
-- `TextField()` - элемент для ввода текста. Атрибуты:
-    - `value`
-    - `onValueChange`
-    - `isError` - нужно ли показывать ошибку при вводе
-    - `label` - пометка при вводе, нужно менять в зависимости от `isError`
-    - `leadingIcon`
-    - `singleLine`
-    - `shape`
-    - `keyboardOptions` - имеет атрибут `keyboardType`, где указываетcя тип вводимых данных, и `imeAction` -
-      показывающей тип `action` кнопки клавиатуры (может быть `next`, `done`, `search`, `send`, `go`)
-    - `keyboardActions` - имеет атрибут `onDone`, в котором можно указать, что делать при нажатии
-- `OutlinedTextField()` - похож на `TextField`, но менее визуально акцентированный
-- `Switch()` - переключатель. Атрибуты:
-    - `checked`
-    - `onCheckedChange`
-- `Card()` - карточка с закругленными краями. Атрибуты:
-    - `elevation`
 - `AlertDialog()` - выводит диалоговое окно на экран. Атрибуты:
     - `onDismissRequest` - закрытие окна
     - `title`
     - `text`
     - `dismissButton` - кнопка закрытия окна
     - `confirmButton` - подтверждение
-- `Divider` - разделительная черта. Атрибуты:
-    - `thickness`
-- `RadioButton` - выбор элемента. Атрибуты:
-    - `selected`
-    - `onClick`
+
+<p align="center"><img src="../images/horiz_arrangement.png" alt="Horizontal Arrangement"/></p>
+
+<p align="center"><img src="../images/vert_arrangement.png" alt="Vertical Arrangement"/></p>
 
 #### Другие полезные функции
 
@@ -167,10 +196,14 @@
 - `painterResource()` - возвращает картинку ресурса, на параметр ресурса стоит повесить `@DrawableRes`
 - `dimensionResource()` - возвращает значение размера ресурса
 - `remember` - запоминает объект в памяти, чтобы он не сбрасывался при перезагрузке UI
-- `mutableStateOf` или `MutableState` - возвращает Observer на одиночное значение, который тригерится при изменении
-  значения, и вызывает перезагрузку (рекомпозицию) UI, сделано специально для `Jetpack Compose`
+- `mutableStateOf()` или `MutableState` - возвращает Observer на одиночное значение, который тригерится при изменении
+  значения, и вызывает перезагрузку (рекомпозицию) UI, сделано специально для `Jetpack Compose`. Не поддерживает
+  многопоточность.
 - `animate*AsState()` - создает анимацию (цвета, размера) при изменении состояния. Атрибуты:
     - `targetValue`
+- `LaunchedEffect()` - используется для вызова `suspend` функций и поддерживает их, пока сама находится в композиции.
+  Атрибуты:
+    - `key`-s - набор ключей (функций), при изменении которых происходит отмена и перезагрузка корутины
 
 ### Темы и стили
 
@@ -185,21 +218,30 @@
 Локальные тесты - обычные тесты без запуска эмулятора (папка `test`), инструментальные тесты - тестируют взаимодействие
 с UI приложения на эмуляторе (папка `androidTest`).
 
+#### Общее
+
 - `@VisibleForTesting` - делает метод публичным для тестирования.
 - `createComposeRule()` - метод для создания заглушки для инструментального теста, также она должна иметь аннотацию
   `@get:Rule`. `setContent` используется для создания контейнера для заглушки, такого же как и в оригинальном коде.
-- `onNodeWithText(текст)` - используется поиск `composable` элемента, содержащей текст.
-- `onNodeWithContentDescription(текст)` - используется поиск `composable` элемента, содержащей текст.
-- `onNodeWithStringId(id)` - используется поиск `composable` элемента, содержащей текст.
-- `assertExists` - можно проверить был ли найден нужный `composable` элемент
-- `performTextInput(текст)` - ввод текста в `TextField`
-- Можно получить текущий контекст с помощью поля `activity` у `createComposeRule()`. Можно получить текст ресурса с
-  помощью вызова `getString(id)` у `activity`.
-- `assertDoesNotExist`, `assertIsDisplayed`, `assertIsNotEnabled`
-
-### Навигация
-
 - `createAndroidComposeRule<ComponentActivity>` - аналог `createComposeRule()`.
-- Нужно использовать `TestNavHostController` для тестирования навигации. При создании объекта нужно также создать
-  навигатор с помощью `navigatorProvider.addNavigator(ComposeNavigator())`.
+
+> Можно получить текущий контекст с помощью поля `activity` у `createComposeRule()`. Можно получить текст ресурса с
+> помощью вызова `getString(id)` у `activity`.
+
+> Нужно использовать `TestNavHostController` для тестирования навигации. При создании объекта нужно также создать
+> навигатор с помощью `navigatorProvider.addNavigator(ComposeNavigator())`.
+
+#### Поиск и проверки
+
+- `onNodeWithText(текст)` - используется поиск `composable` элемента, содержащей текст.
+- `onNodeWithStringId(id)` - используется поиск `composable` элемента, содержащей текст.
+- `onNodeWithContentDescription(текст)` - используется поиск `composable` элемента, содержащей текст.
+- `onNodeWithContentDescriptionForStringId(id)` - используется поиск `composable` элемента, содержащей текст.
+- `onNodeWithTagForStringId(id)` - используется поиск `composable` элемента, содержащей тег.
+- `assertExists`, `assertDoesNotExist`, `assertIsDisplayed`, `assertIsNotEnabled`, `assertAny` (вместе с `onChildren()`)
+
+#### Взаимодействие
+
+- `performTextInput(текст)` - ввод текста в `TextField`
 - `performClick()` - можно сделать клик на `composable` элементе.
+- `emulateSavedInstanceStateRestore()` - симуляция изменения конфигурации, как при повороте экрана

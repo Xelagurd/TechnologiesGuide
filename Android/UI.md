@@ -68,6 +68,7 @@
     - `topBar`
 - `Surface()` - контейнер для определения заднего фона, границ. Атрибуты:
     - `topBar`
+- `FloatingActionButton` - 'парящая' кнопка
 - `TopAppBar()` - верхний бар. Атрибуты:
     - `title`
     - `colors` - цвет
@@ -110,7 +111,7 @@
     - `painter` либо `imageVector`
     - `tint` - цвет
 - `Card()` - карточка с закругленными краями. Атрибуты:
-    - `elevation`
+    - `elevation` - с помощью `CardDefaults.cardElevation`
     - `shape`
     - `onClick`
 - `Button()` - элемент для добавления кнопки. Атрибуты:
@@ -155,8 +156,9 @@
 - `LazyColumn`, `LazyRow` - используется для бесконечных списков. Атрибуты:
     - `contentPadding` - в качестве значения может быть передана `contentWindowInsets` из `Scaffold`.
 
-  Внутри вызывается функция `items(список) { элемент -> создание одной UI }`. Код для `padding` для `Surface` под
-  список:
+  Внутри вызывается функция `items(список, ключ) { элемент -> создание одной UI }`. Ключ необходим `Jetpack Compose` для
+  правильного определения местоположения элементов при добавлении новых или повороте экрана. Код для `padding` для
+  `Surface` под список:
     ```kotlin
     @Composable
     fun AffirmationsApp() {
@@ -176,6 +178,8 @@
     }
     ```
 - `LazyVerticalGrid`, `LazyHorizontalGrid` - используется для бесконечной сетки с одинаковыми по размеру элементами.
+  Атрибуты:
+    - `columns` - можно определить размер столбцов с помощью `GridCells.Adaptive(minSize)` или `GridCells.Fixed(number)`
 - `LazyVerticalStaggeredGrid`, `LazyHorizontalStaggeredGrid` - используется для бесконечной сетки с разными по размеру
   элементами.
 - `AlertDialog()` - выводит диалоговое окно на экран. Атрибуты:
@@ -184,6 +188,16 @@
     - `text`
     - `dismissButton` - кнопка закрытия окна
     - `confirmButton` - подтверждение
+- `AsyncImage` - загружает и отображает картинку из интернета (библиотека `Coil`). Атрибуты:
+    - `model` - либо `URL`, либо создание `ImageRequest`:
+      ```kotlin
+      ImageRequest.Builder(LocalContext.current)
+      .data("URL")
+      .crossfade(true)
+      .build()
+      ```
+    - `placeholder`, `error`, `fallback` - картинки для разных результатов выполнения запроса
+    - `onLoading`, `onSuccess`, `onError` - callback для разных результатов выполнения запроса
 
 <p align="center"><img src="../images/horiz_arrangement.png" alt="Horizontal Arrangement"/></p>
 

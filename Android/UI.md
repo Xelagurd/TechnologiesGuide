@@ -53,7 +53,8 @@
     - `statusBarsPadding`
     - `aspectRatio`
     - `clip` - для настройки формы
-    - `animateContentSize` - анимация размера, принимает параметр `animationSpec` со значением функции `spring`
+    - `animateContentSize` - анимация изменения размера для дочерних элементов, принимает параметр `animationSpec` со
+      значением функции `spring`
     - `minimumTouchTargetSize()` - минимальный размер для нажатия
     - `selectable` - дает возможность выбирать элемент, `selected` и `onClick`
     - `testTag` - добавляет тег для тестирования и использования `onNodeWithTagForStringId`
@@ -118,7 +119,9 @@
     - `onClick`
     - `shape`
     - `colors`
-- `OutlinedButton()` - похож на `Button`, но менее визуально акцентированный
+- `OutlinedButton()` - `Button`, но цвет фона совпадает с background, очерченный линией
+- `FilledTonalButton()` - `Button`, но темный текст на светлом фоне
+- `ElevatedButton()` - `Button`, но парящая
 - `TextButton` - кнопка на тексте. Атрибуты:
     - `onClick`
 - `IconButton` - кнопка на иконке. Атрибуты:
@@ -198,6 +201,8 @@
       ```
     - `placeholder`, `error`, `fallback` - картинки для разных результатов выполнения запроса
     - `onLoading`, `onSuccess`, `onError` - callback для разных результатов выполнения запроса
+- `CircularProgressIndicator` - круглый индикатор загрузки
+- `LinearProgressIndicator` - линейный индикатор загрузки
 
 <p align="center"><img src="../images/horiz_arrangement.png" alt="Horizontal Arrangement"/></p>
 

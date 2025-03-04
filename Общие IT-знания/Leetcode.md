@@ -11,7 +11,7 @@
 #### Полезные функции
 
 - Int.MAX_VALUE и Int.MIN_VALUE
-- 5.digitToChar()
+- 5.digitToChar() и '5'.digitToInt()
 - maxOf(2 или 3 значения)
 
 #### Строки
@@ -21,6 +21,7 @@
   - startsWith(префикс, отступ, игнор_кейса)
   - endsWith(суффикс, игнор_кейса)
   - substring(1..2) (с включением 2); substring(1, 2) (без включения 2); substring(1) (только старт)
+  - removeRange(1..2) (с включением 2); removeRange(1, 2) (без включения 2);
   - isNotEmpty()
   - toCharArray()
 - StringBuilder() или buildString { где this - StringBUilder() }
@@ -31,22 +32,26 @@
 #### Массивы
 
 - IntArray(5).contentEquals(IntArray(5))
-- mutableListOf().toString() = arrayOf().contentToString()
+- mutableListOf().toString() = arrayOf().contentToString() - [a, b, c]
+- mutableListOf().joinToString(separator = "") = arrayOf().concatToString() - abc
 - IntArray(размер).toTypedArray() = Array<Int>(размер) { создание каждого элемента, где it номер индекса }
 - Array(размер) { IntArray(размер) } - двумерный массив
 
 #### Коллекции
 
 - ArrayDeque<Int>()
+- LinkedList<Int>()
+- arrayListOf<Int>()
 - hashMapOf<Int, Int>()
   - getOrDefault(элемент, знач_по_умолч)
   - getOrPut(элемент) { вычисление добавл. значения }
-  - merge(элемент, знач) { действие если знач существует a, b -> a + b }
+  - merge(элемент, знач) { действие если знач существует a, b -> a + b } вместо колл[элемент] = колл.getOrDefault(элемент, 0) + знач
   - remove(ключ)
   - replace(ключ, старое_знач, новое_знач) - заменяет старое значение, если оно есть, на новое
 - PriorityQueue<Int>() - по умолчанию (по увеличению)
   - PriorityQueue<Int> { o1, o2 -> o2 - o1 } - по уменьшению
   - PriorityQueue(Comparator<Тип> { ... }.thenComparing { ... }) - сложный компаратор
+- TreeMap<Int, String>() или TreeMap<Int, String> { a, b -> b - a } - по уменьшению
 
 
 - arrayOf().size, mutableListOf().size
